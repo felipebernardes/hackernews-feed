@@ -1,3 +1,5 @@
+const POST_LIST = document.querySelector('[data-post-list]');
+
 const formatTimestamp = (timestamp) => {
   return timestamp;
 }
@@ -14,20 +16,16 @@ const generateMarkup = (postData) => {
       <p class="post-list__item__author">id ${postData.id}</p>
     </li>
   `;
+
+  //TODO remove id
 }
 
-const renderPost = (postData, postList, placement = 'bottom') => {
+const renderPost = (postData, placement = 'beforeend', delay = 0) => {
   const markup = generateMarkup(postData);
 
-  console.log('postData', postData);
-
-  if (placement === 'bottom') {
-    postList.insertAdjacentHTML('beforeend', markup);
-  }
-
-  if (placement === 'top') {
-    postList.insertAdjacentHTML('afterbegin', markup);
-  }
+  setTimeout(() => {
+      POST_LIST.insertAdjacentHTML(placement, markup);
+  }, delay);
 }
 
 export default renderPost;

@@ -3,93 +3,70 @@ import renderPost from './actions/renderPost';
 import registerInfiniteScroll from './actions/registerInfiniteScroll';
 import { addPostListListener, addPostItemListener } from './services/realTimeDatabase';
 
-const postsPerIteration = 30;
-const postList = document.querySelector('[data-post-list]');
+const CONFIG = {
+  animationDelay: 300,
+  postsPerPage: 30,
+}
 
 const state = {
   initialRenderPostIds: [],
   page: 1,
-  newestRenderedPostId: null
+  firstPostOnListId: null,
+  isInfiniteScrollActive: false
 }
 
-const handlePosts = (postIds) => {
-  if (state.newestRenderedPostId) {
-    const diff = postIds.filter(id => id > state.newestRenderedPostId);
-    console.log('new posts!', diff);
+addPostListListener((postIds) => {
+  if (state.firstPostOnListId) {
+    const newPostIds = postIds.filter(id => id > state.firstPostOnListId)
+                              .reverse() // so newer posts render last, and stays on top of posts list;
 
-    renderNewerPosts(diff);
+    console.log('new posts!', newPostIds);
+    renderPosts(newPostIds, 'afterbegin');
   }
 
-  if (!state.newestRenderedPostId) {
+  if (!state.firstPostOnListId) {
     console.log('first render!', postIds);
     
-    state.newestRenderedPostId = postIds[0];
+    state.firstPostOnListId = postIds[0];
     state.initialRenderPostIds = postIds;
 
     paginate(postIds, state.page);
   }
-}
+});
 
-addPostListListener(handlePosts);
-
-const renderNewerPosts = (newPostsIds) => {
-  newPostsIds
-  .reverse() // so we render the newest last, and it stays on top of newest order
-  .forEach(async (postId) => {
-    const action = (post) => {
-      state.newestRenderedPostId = postId;
-      renderPost(post, postList, 'top');
-    }
-    
-    addPostItemListener(postId, action);
-
-      addPostListListener,
-  addPostItemListener
-  });
-}
-
-const renderPosts = (postIds, onRender) => {
-  const isLastPost = (postId) => postId === postIds[postIds.length-1];
-
-  postIds.forEach(async (postId, postIndex) => {
-    const action = (post) => {
-      setTimeout(() => {
-        renderPost(post, postList, 'bottom');
-      }, 130 * postIndex+1);
-  
-      if (onRender && isLastPost(postId)) {
-        onRender();
-      }
-    }
-    
-    addPostItemListener(postId, action);
-
-      addPostListListener,
-  addPostItemListener
-  });
+const renderPosts = (postIds, placement) => {
+  postIds.forEach((postId, postIndex) => handlePostList(postId, postIndex, placement));
 }
 
 const paginate = (postIds, page) => {
-    let firstItemToRender, lastItemToRender, onRender;
+    let firstPostToRender, lastPostToRender;
 
     if (page === 1) {
-      firstItemToRender = 0;
-      lastItemToRender = postsPerIteration;
+      firstPostToRender = 0;
+      lastPostToRender = CONFIG.postsPerPage;
     } else {
-      firstItemToRender = page * postsPerIteration;
-      lastItemToRender = (page * postsPerIteration) + postsPerIteration;
+      firstPostToRender = page * CONFIG.postsPerPage;
+      lastPostToRender = (page * CONFIG.postsPerPage) + CONFIG.postsPerPage;
     }
     
-    const pagePostIds = postIds.slice(firstItemToRender, lastItemToRender);
+    const pagePostIds = postIds.slice(firstPostToRender, lastPostToRender);
 
-    if (page === 1) {
-      onRender = () => {
-        registerInfiniteScroll(() => {
-          state.page++;
-          paginate(state.initialRenderPostIds, state.page);
-        });
-      }
+    renderPosts(pagePostIds, 'beforeend');
+}
+
+const handlePostList = (postId, postIndex, placement) => {
+  addPostItemListener(postId, (post) => {
+    if (placement === 'afterbegin') {
+      state.firstPostOnListId = postId;
     }
-    
-    renderPosts(pagePostIds, onRender);
+    renderPost(post, placement, CONFIG.animationDelay * postIndex+1);
+  });
+
+  if (state.page === 1 && !state.isInfiniteScrollActive) {
+    state.isInfiniteScrollActive = true;
+    registerInfiniteScroll(() => {
+      state.page++;
+      paginate(state.initialRenderPostIds, state.page);
+    });
+  }
 }
