@@ -1,24 +1,10 @@
 import '../scss/main.scss';
 import renderPost from './actions/renderPost';
 import registerInfiniteScroll from './actions/registerInfiniteScroll';
-
-const firebase = require('firebase/app');
-require('firebase/database');
-
-//TODO set apikeys as env variables
-const app = firebase.initializeApp({
-  databaseURL: 'https://hacker-news.firebaseio.com'
-});
-const db = firebase.database(app);
-const newStoriesRef = db.ref('/v0/newstories');
+import { addPostListListener, addPostItemListener } from './services/realTimeDatabase';
 
 const postsPerIteration = 30;
 const postList = document.querySelector('[data-post-list]');
-
-const retrievePostRef = async (postId) => {
-  const postRef = await db.ref(`/v0/item/${postId}`);
-  return postRef;
-}
 
 const state = {
   initialRenderPostIds: [],
@@ -26,46 +12,65 @@ const state = {
   newestRenderedPostId: null
 }
 
-newStoriesRef.on('value', function(snapshot) {
-  const newStoriesIds = snapshot.val();
-
+const handlePosts = (postIds) => {
   if (state.newestRenderedPostId) {
-    const diff = newStoriesIds.filter(id => id > state.newestRenderedPostId);
+    const diff = postIds.filter(id => id > state.newestRenderedPostId);
     console.log('new posts!', diff);
 
     renderNewerPosts(diff);
   }
 
   if (!state.newestRenderedPostId) {
-    console.log('first render!', newStoriesIds);
+    console.log('first render!', postIds);
     
-    state.newestRenderedPostId = newStoriesIds[0];
-    state.initialRenderPostIds = newStoriesIds;
+    state.newestRenderedPostId = postIds[0];
+    state.initialRenderPostIds = postIds;
 
-    paginate(newStoriesIds, state.page);
+    paginate(postIds, state.page);
   }
-});
+}
+
+addPostListListener(handlePosts);
 
 const renderNewerPosts = (newPostsIds) => {
   newPostsIds
   .reverse() // so we render the newest last, and it stays on top of newest order
-  .forEach(async (storyId) => {
-    const postRef = await retrievePostRef(storyId);
+  .forEach(async (postId) => {
+    const action = (post) => {
+      state.newestRenderedPostId = postId;
+      renderPost(post, postList, 'top');
+    }
     
-    postRef.once('value', async (snapshot) => {
-      const postData = await snapshot.val();
-      
-      if (!postData) return; //data not available yet
-      // TODO retry after a few minutes
+    addPostItemListener(postId, action);
 
-      state.newestRenderedPostId = storyId;
-      renderPost(postData, postList, 'top');
-    });
+      addPostListListener,
+  addPostItemListener
+  });
+}
+
+const renderPosts = (postIds, onRender) => {
+  const isLastPost = (postId) => postId === postIds[postIds.length-1];
+
+  postIds.forEach(async (postId, postIndex) => {
+    const action = (post) => {
+      setTimeout(() => {
+        renderPost(post, postList, 'bottom');
+      }, 130 * postIndex+1);
+  
+      if (onRender && isLastPost(postId)) {
+        onRender();
+      }
+    }
+    
+    addPostItemListener(postId, action);
+
+      addPostListListener,
+  addPostItemListener
   });
 }
 
 const paginate = (postIds, page) => {
-    let firstItemToRender, lastItemToRender, onComplete;
+    let firstItemToRender, lastItemToRender, onRender;
 
     if (page === 1) {
       firstItemToRender = 0;
@@ -78,33 +83,13 @@ const paginate = (postIds, page) => {
     const pagePostIds = postIds.slice(firstItemToRender, lastItemToRender);
 
     if (page === 1) {
-      onComplete = () => {
+      onRender = () => {
         registerInfiniteScroll(() => {
           state.page++;
-          renderPosts(state.initialRenderPostIds, state.page);
+          paginate(state.initialRenderPostIds, state.page);
         });
       }
     }
     
-    renderPosts(pagePostIds, onComplete);
-}
-
-const renderPosts = (postIds, onComplete) => {
-  postIds.forEach(async (storyId, idx) => {
-    const postRef = await retrievePostRef(storyId);
-
-    postRef.once('value', async (snapshot) => {
-      const postData = await snapshot.val();
-      
-      if (!postData) return; //data not available yet
-
-      setTimeout(() => {
-        renderPost(postData, postList, 'bottom');
-      }, 130 * idx+1);
-
-        if (onComplete && postData.id === postIds[postIds.length-1]) {
-          onComplete();
-        } 
-    });
-  });
+    renderPosts(pagePostIds, onRender);
 }
