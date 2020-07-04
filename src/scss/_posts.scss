@@ -1,0 +1,28 @@
+.post-list {
+  width: 90%;
+  margin: 0 auto;
+  //list-style: none;
+
+  &__item {
+    opacity: 0;
+    position: relative;
+    left: -1rem;
+    margin: 1rem 0;
+    animation-name: appearing-item;
+    animation-duration: 1s;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+}
+
+@keyframes appearing-item {
+  from {
+    opacity: 0;
+    left: -1rem;
+  }
+
+  to {
+    opacity: 1;
+    left: 0;
+  }
+}
