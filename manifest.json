@@ -1,0 +1,11 @@
+{
+  "name": "Hackernews Feed",
+  "short_name": "Hackernews Feed",
+  "theme_color": "#fafafa",
+  "background_color": "#fafafa",
+  "display": "standalone",
+  "scope": "/",
+  "start_url": "/",
+  "lang": "en-US",
+  "orientation": "portrait"
+}
