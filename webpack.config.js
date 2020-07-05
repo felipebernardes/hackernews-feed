@@ -1,29 +1,50 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MinifyPlugin = require("babel-minify-webpack-plugin");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/js/main.js',
-  devtool: 'inline-source-map',  
+  mode: 'production',
+  entry: ['./src/js/main.js', './src/scss/main.scss'],
+  //devtool: 'inline-source-map',
   output: {
     filename: 'main.js',
     path: __dirname
   },
-  watch: true,
+  watch: false,
   devServer: {
-    contentBase: path.join(__dirname, '/.'),
     compress: true,
+    inline: true,
+    contentBase: './',
     port: 9000
   },
+  // optimization: {
+  //  /* minimizer: [new TerserPlugin({
+  //     terserOptions: {
+  //       output: {
+  //         comments: false,
+  //       },
+  //     },
+  //   })]*/
+  // },
+  plugins: [
+    new MinifyPlugin(null, {
+      comments: false
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'style.css',
+      chunkFilename: 'style.css',
+    }),
+  ],
   module: {
     rules: [
       {
-        test: /\.scss$/i,
+        test: /\.scss$/,
         use: [
-          'style-loader',
+          MiniCssExtractPlugin.loader,
           'css-loader',
           'sass-loader'
-        ]
-      }
-    ]
-  }
+        ],
+      },
+    ],
+  },
 };

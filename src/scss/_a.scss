@@ -1,8 +1,9 @@
 a,
 a:visited {
   text-decoration: none;
-  color: lighten($color-orange, 10%);
+  color: darken($color-orange, 15%);
   transition: color .1s linear;
+  padding: .5rem 0;
 
   &:hover {
     text-decoration: none;
