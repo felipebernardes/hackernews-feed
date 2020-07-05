@@ -4,14 +4,64 @@
   //list-style: none;
 
   &__item {
+    display: grid;
+    grid-template-areas: 
+      'title title title'
+      'url url url'
+      'date author .'
+      'comments upvotes .';
+    grid-gap: .5rem;
+
+    padding: 1rem;
+    margin: 1rem 0;
+    
+    background-color: darken($color-ice, 3%);
+    border-radius: 3px;
+
     opacity: 0;
     position: relative;
     left: -1rem;
-    margin: 1rem 0;
     animation-name: appearing-item;
     animation-duration: 1s;
     animation-timing-function: linear;
     animation-fill-mode: forwards;
+    
+    &__title {
+      grid-area: title;
+    }
+
+    &__url {
+      grid-area: url;
+      font-size: .8rem;
+    }
+
+    &__date {
+      grid-area: date;
+      font-size: .8rem;
+    }
+
+    &__author {
+      grid-area: author;
+      font-size: .8rem;
+
+      a {
+        font-size: .8rem;
+      }
+    }
+
+    &__comments {
+      grid-area: comments;
+      font-size: .8rem;
+
+      a {
+        font-size: .8rem;
+      }
+    }
+
+    &__upvotes {
+      grid-area: upvotes;
+      font-size: .8rem;
+    }
   }
 }
 

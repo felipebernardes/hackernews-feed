@@ -1,0 +1,11 @@
+a,
+a:visited {
+  text-decoration: none;
+  color: lighten($color-orange, 10%);
+  transition: color .1s linear;
+
+  &:hover {
+    text-decoration: none;
+    color: $color-orange;
+  }
+}

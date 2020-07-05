@@ -1,0 +1,14 @@
+.header {
+  background: linear-gradient(to right, $color-orange, $color-yellow);
+  padding: 3vmin 0;
+  opacity: 1;
+
+  &__title {
+    color: #fff;
+    padding-left: 1rem;
+    font-size: 4vmin;
+    font-weight: normal;
+    width: 90%;
+    margin: auto;
+  }
+}
