@@ -1,12 +1,12 @@
 @import './reset';
 @import './variables';
 
-@import './a';
+@import './link';
 
 @import './header';
 @import './posts';
 
 body {
-  font-family: $font-family;
+  font-family: $font-family-body;
   background-color: $color-ice;
 }
