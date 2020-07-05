@@ -5,7 +5,7 @@ const MinifyPlugin = require("babel-minify-webpack-plugin");
 module.exports = {
   mode: 'production',
   entry: ['./src/js/main.js', './src/scss/main.scss'],
-  //devtool: 'inline-source-map',
+  devtool: 'inline-source-map',
   output: {
     filename: 'main.js',
     path: __dirname
@@ -17,15 +17,6 @@ module.exports = {
     contentBase: './',
     port: 9000
   },
-  // optimization: {
-  //  /* minimizer: [new TerserPlugin({
-  //     terserOptions: {
-  //       output: {
-  //         comments: false,
-  //       },
-  //     },
-  //   })]*/
-  // },
   plugins: [
     new MinifyPlugin(null, {
       comments: false
