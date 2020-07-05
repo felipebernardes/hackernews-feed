@@ -1,3 +1,4 @@
-import Feed from './feed';
+import Feed from './components/feed';
+import RealTimeDatabase from './services/realTimeDatabase';
 
-new Feed();
+new Feed(new RealTimeDatabase());

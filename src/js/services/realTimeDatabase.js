@@ -28,7 +28,7 @@ export default class RealTimeDatabase {
 
   async handleSnapshot(snapshot, action) {
     const data = await snapshot.val();
-    if (!data) return; // data not available yet, TODO retry
+    if (!data) return;
     action(data);
   }
 

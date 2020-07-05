@@ -1,18 +1,15 @@
 
-import '../scss/main.scss';
-import PostRenderer from './actions/renderPost';
-import InfiniteScroll from './actions/registerInfiniteScroll';
-import RealTimeDatabase from './services/realTimeDatabase';
-import Paginator from './actions/paginator';
+import PostRenderer from './postRenderer';
+import InfiniteScroll from './infiniteScroll';
+import Paginator from './paginator';
 
 export default class Feed {
-
   static get ANIMATION_DELAY() {
     return 100;
   };
 
-  constructor() {
-    this.realTimeDatabase = new RealTimeDatabase();
+  constructor(realTimeDatabase) {
+    this.realTimeDatabase = realTimeDatabase;
     this.state = {
       initialRenderPostIds: [],
       page: 1,
@@ -27,7 +24,6 @@ export default class Feed {
     this.realTimeDatabase.addPostListListener(this.postListHandler.bind(this));
   }
 
-  // Handle new HN Post List
   postListHandler(postIds) {
     if (this.state.firstPostOnListId) {
       const newPostIds = postIds.filter(id => id > this.state.firstPostOnListId)
