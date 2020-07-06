@@ -31,7 +31,7 @@
       "type":"image/png"
     }
   ],
-  "scope": "/",
+  "scope": "./",
   "start_url": "/",
   "lang": "en-US",
   "orientation": "portrait"
