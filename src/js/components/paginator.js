@@ -14,7 +14,7 @@ export default class Paginator {
       lastItem = Paginator.CONFIG.itemsPerPage;
     } else {
       firstItem = page * Paginator.CONFIG.itemsPerPage;
-      lastItem = ((page - 1) * Paginator.CONFIG.itemsPerPage) + Paginator.CONFIG.itemsPerPage;
+      lastItem = (page * Paginator.CONFIG.itemsPerPage) + Paginator.CONFIG.itemsPerPage;
     }
 
     const paginatedItems = items.slice(firstItem, lastItem);

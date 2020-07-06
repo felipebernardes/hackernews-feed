@@ -23,17 +23,16 @@ export default class Feed {
   }
 
   postListHandler(postIds) {
+    // render new posts
     if (this.state.firstPostOnListId) {
       const newPostIds = postIds.filter((id) => id > this.state.firstPostOnListId)
         .reverse(); // so newer posts render last, and stays on top of posts list;
 
-      console.log('new posts!', newPostIds);
       this.renderPosts(newPostIds, 'afterbegin');
     }
 
+    // first render
     if (!this.state.firstPostOnListId) {
-      console.log('first render!', postIds);
-
       this.state.firstPostOnListId = postIds[0];
       this.state.initialRenderPostIds = postIds;
 

@@ -6,7 +6,6 @@ export default class InfiniteScroll {
 
   init() {
     document.addEventListener('scroll', this.scrollHandler.bind(this));
-    console.log('infinite scroll initialized');
   }
 
   scrollHandler() {
@@ -15,7 +14,6 @@ export default class InfiniteScroll {
     const hasWindowScrolledToBottom = bottomScrollPosition === documentHeight;
 
     if (hasWindowScrolledToBottom) {
-      console.log('infinite scroll triggered');
       this.action();
     }
   }

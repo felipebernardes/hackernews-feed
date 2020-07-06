@@ -15,5 +15,5 @@ describe('HackerNews Feed', () => {
     cy.scrollTo('bottom');
     cy.wait(1000);
     cy.get('ul[data-post-list] li').should('have.length', 20);
-  })
+  });
 });
