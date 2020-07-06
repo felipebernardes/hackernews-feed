@@ -13,12 +13,24 @@ export default class RealTimeDatabase {
   }
 
   constructor() {
-    this.firebaseApp = firebase.initializeApp({
-      databaseURL: RealTimeDatabase.API_CONFIG.databaseURL
-    });
+    if (navigator.onLine) {
+      this.firebaseApp = firebase.initializeApp({
+        databaseURL: RealTimeDatabase.API_CONFIG.databaseURL
+      });
+      this.database = firebase.database(this.firebaseApp);
+      this.newStoriesRef = this.database.ref(RealTimeDatabase.API_CONFIG.endpoints.newStories);
+    }
 
-    this.database = firebase.database(this.firebaseApp);
-    this.newStoriesRef = this.database.ref(RealTimeDatabase.API_CONFIG.endpoints.newStories);
+    this.offlineStorage = {
+      postList: {
+        get: () => JSON.parse(window.localStorage.getItem('postList')),
+        set: (data) => window.localStorage.setItem('postList', JSON.stringify(data))
+      },
+      post: {
+        get: (key) => JSON.parse(window.localStorage.getItem(key)),
+        set: (data) => window.localStorage.setItem(data.id, JSON.stringify(data))
+      }
+    };
   }
 
   async getPostRef(postId) {
@@ -26,18 +38,40 @@ export default class RealTimeDatabase {
     return postRef;
   }
 
-  async handleSnapshot(snapshot, action) {
+  async handleSnapshot(snapshot, action, kind) {
     const data = await snapshot.val();
     if (!data) return;
+
+    if (kind === 'post') {
+      this.offlineStorage.post.set(data);
+    } else {
+      this.offlineStorage.postList.set(data);
+    }
     action(data);
   }
 
   addPostListListener(action) {
-    this.newStoriesRef.on('value', (snapshot) => this.handleSnapshot(snapshot, action));
+    if (!navigator.onLine) {
+      const cachedPostList = this.offlineStorage.postList.get();
+      if (cachedPostList) {
+        action(cachedPostList);
+      }
+      return;
+    }
+
+    this.newStoriesRef.once('value', (snapshot) => this.handleSnapshot(snapshot, action, 'postList'));
   }
 
   async addPostItemListener(postId, action) {
+    if (!navigator.onLine) {
+      const cachedPost = this.offlineStorage.post.get(postId);
+      if (cachedPost) {
+        action(cachedPost);
+      }
+      return;
+    }
+
     const postRef = await this.getPostRef(postId);
-    postRef.once('value', (snapshot) => this.handleSnapshot(snapshot, action));
+    postRef.once('value', (snapshot) => this.handleSnapshot(snapshot, action, 'post'));
   }
 }
