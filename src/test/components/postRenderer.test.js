@@ -31,7 +31,7 @@ describe('RenderPost', () => {
         </h2>
         <a class="post-list__item__url" href="https://analyticsindiamag.com/can-we-train-gans-with-less-data/">↗️ https://analyticsindiamag.com/can-we-train-gans-with-less-data/</a>
         <time class="post-list__item__date">🗓 Jul 5 2020 @ 12:54</time>
-        <p class="post-list__item__author">👤by <a href="https://news.ycombinator.com/user?id=23739592">Leemarose</a></p>
+        <p class="post-list__item__author">👤by <a href="https://news.ycombinator.com/user?id=Leemarose">Leemarose</a></p>
         <p class="post-list__item__comments">💬 <a href="https://news.ycombinator.com/item?id=23739592">0 comments</a></p>
         <p class="post-list__item__upvotes">🔼 1 points</p>
       </li>`;

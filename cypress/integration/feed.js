@@ -1,5 +1,5 @@
-describe('HackerNews Feed', () => {
-  it('Access HackerNews Feed', () => {
+describe('Feed', () => {
+  it('Access Feed', () => {
     cy.visit('/');
   });
 
