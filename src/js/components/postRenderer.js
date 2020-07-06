@@ -1,13 +1,13 @@
 export default class PostRenderer {
-  static get POST_LIST() { 
+  static get POST_LIST() {
     return document.querySelector('[data-post-list]');
   }
 
   static render(postData, placement = 'beforeend', animationDelay = 0) {
     if (postData.deleted || postData.dead) return;
-  
+
     const markup = PostRenderer.generateMarkup(postData);
-  
+
     setTimeout(() => {
       PostRenderer.POST_LIST.insertAdjacentHTML(placement, markup);
     }, animationDelay);

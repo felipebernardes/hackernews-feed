@@ -9,7 +9,7 @@ export default class RealTimeDatabase {
         newStories: '/v0/newstories',
         item: '/v0/item'
       }
-    }
+    };
   }
 
   constructor() {
@@ -33,11 +33,11 @@ export default class RealTimeDatabase {
   }
 
   addPostListListener(action) {
-    this.newStoriesRef.on('value', snapshot => this.handleSnapshot(snapshot, action));
+    this.newStoriesRef.on('value', (snapshot) => this.handleSnapshot(snapshot, action));
   }
-  
+
   async addPostItemListener(postId, action) {
     const postRef = await this.getPostRef(postId);
-    postRef.once('value', snapshot => this.handleSnapshot(snapshot, action));
+    postRef.once('value', (snapshot) => this.handleSnapshot(snapshot, action));
   }
 }

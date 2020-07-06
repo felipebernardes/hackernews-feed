@@ -1,4 +1,3 @@
-
 import PostRenderer from './postRenderer';
 import InfiniteScroll from './infiniteScroll';
 import Paginator from './paginator';
@@ -6,16 +5,15 @@ import Paginator from './paginator';
 export default class Feed {
   static get ANIMATION_DELAY() {
     return 100;
-  };
+  }
 
   constructor(realTimeDatabase) {
     this.realTimeDatabase = realTimeDatabase;
     this.state = {
       initialRenderPostIds: [],
       page: 1,
-      firstPostOnListId: null,
-      isInfiniteScrollActive: false
-    }
+      firstPostOnListId: null
+    };
     this.init();
   }
 
@@ -26,19 +24,19 @@ export default class Feed {
 
   postListHandler(postIds) {
     if (this.state.firstPostOnListId) {
-      const newPostIds = postIds.filter(id => id > this.state.firstPostOnListId)
-                                .reverse(); // so newer posts render last, and stays on top of posts list;
-  
+      const newPostIds = postIds.filter((id) => id > this.state.firstPostOnListId)
+        .reverse(); // so newer posts render last, and stays on top of posts list;
+
       console.log('new posts!', newPostIds);
       this.renderPosts(newPostIds, 'afterbegin');
     }
-  
+
     if (!this.state.firstPostOnListId) {
       console.log('first render!', postIds);
-      
+
       this.state.firstPostOnListId = postIds[0];
       this.state.initialRenderPostIds = postIds;
-  
+
       this.renderPosts(postIds, 'beforeend');
     }
   }
@@ -56,8 +54,8 @@ export default class Feed {
         if (placement === 'afterbegin') {
           this.state.firstPostOnListId = postId;
         }
-    
-        PostRenderer.render(post, placement, Feed.ANIMATION_DELAY * postIndex+1);
+
+        PostRenderer.render(post, placement, Feed.ANIMATION_DELAY * postIndex + 1);
       });
     });
   }
