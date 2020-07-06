@@ -1,7 +1,7 @@
 {
   "name": "hackernews-feed",
   "version": "1.0.0",
-  "description": "",
+  "description": "An app which shows a list of the newest hackernews posts, in a charming way.",
   "main": "webpack.config.js",
   "directories": {
     "test": "tests"
@@ -40,7 +40,7 @@
     "type": "git",
     "url": "git+https://github.com/felipebernardes/hackernews-feed.git"
   },
-  "author": "",
+  "author": "Felipe Bernardes",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/felipebernardes/hackernews-feed/issues"
