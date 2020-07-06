@@ -6,18 +6,18 @@ export default class Paginator {
   }
 
   static paginate(items, page) {
-    let firstItem;
-    let lastItem;
+    let startIndex;
+    let quantity;
 
     if (page === 1) {
-      firstItem = 0;
-      lastItem = Paginator.CONFIG.itemsPerPage;
+      startIndex = 0;
+      quantity = Paginator.CONFIG.itemsPerPage;
     } else {
-      firstItem = page * Paginator.CONFIG.itemsPerPage;
-      lastItem = (page * Paginator.CONFIG.itemsPerPage) + Paginator.CONFIG.itemsPerPage;
+      startIndex = (page - 1) * Paginator.CONFIG.itemsPerPage;
+      quantity = (startIndex + Paginator.CONFIG.itemsPerPage);
     }
 
-    const paginatedItems = items.slice(firstItem, lastItem);
+    const paginatedItems = items.slice(startIndex, quantity);
 
     return paginatedItems;
   }
