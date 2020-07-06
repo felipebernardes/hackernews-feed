@@ -2,7 +2,7 @@
 An app which shows a list of the newest hackernews posts, in a charming way. Created using VanillaJS.
 
 
-# Demo ✨
+### Demo ✨
 https://felipebernardes.github.io/hackernews-feed
 
 
