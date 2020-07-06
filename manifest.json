@@ -32,7 +32,7 @@
     }
   ],
   "scope": "./",
-  "start_url": "/",
+  "start_url": "/hackernews-feed",
   "lang": "en-US",
   "orientation": "portrait"
 }
