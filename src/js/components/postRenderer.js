@@ -26,15 +26,16 @@ export default class PostRenderer {
   }
 
   static generateMarkup(postData) {
+    const postLink = `https://news.ycombinator.com/item?id=${postData.id}`;
     return `
       <li class="post-list__item">
         <h2 class="post-list__item__title">
-          <a href="https://news.ycombinator.com/item?id=${postData.id}">${postData.title}</a>
+          <a href="${postLink}">${postData.title}</a>
         </h2>
-        <a class="post-list__item__url" href="${postData.url}">↗️ ${postData.url}</a>
+        <a class="post-list__item__url" href="${postData.url}">↗️ ${postData.url || postLink}</a>
         <time class="post-list__item__date">🗓 ${PostRenderer.formatTimestamp(postData.time)}</time>
-        <p class="post-list__item__author">👤by <a href="https://news.ycombinator.com/user?id=${postData.id}">${postData.by}</a></p>
-        <p class="post-list__item__comments">💬 <a href="https://news.ycombinator.com/item?id=${postData.id}">${postData.descendants} comments</a></p>
+        <p class="post-list__item__author">👤by <a href="https://news.ycombinator.com/user?id=${postData.by}">${postData.by}</a></p>
+        <p class="post-list__item__comments">💬 <a href="${postLink}">${postData.descendants} comments</a></p>
         <p class="post-list__item__upvotes">🔼 ${postData.score} points</p>
       </li>`;
   }
