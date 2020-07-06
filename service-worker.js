@@ -2,10 +2,16 @@ const CONFIG = {
   cacheName: 'hackernews-feed',
   apiURL: 'https://hacker-news.firebaseio.com',
   staticFiles: [
-    '/',
-    '/manifest.json',
-    '/index.html',
-    '/main.js'
+    './',
+    './manifest.json',
+    './index.html',
+    './main.js',
+    './style.css',
+    './icon/16.png',
+    './icon/32.png',
+    './icon/192.png',
+    './icon/180.png',
+    './icon/512.png'
   ]
 };
 
@@ -38,8 +44,9 @@ this.addEventListener('activate', e => {
 
 this.addEventListener('fetch', function(e) {
   console.log('[Service Worker] Fetch', e.request.url);
+  const isApiRequest = e.request.url.indexOf(CONFIG.apiURL) > -1;
 
-  if (e.request.url.indexOf(CONFIG.apiURL) > -1) {
+  if (isApiRequest) {
     e.respondWith(
       caches.open(CONFIG.cacheName).then(function(cache) {
         return fetch(e.request).then(function(response){

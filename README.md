@@ -1,4 +1,4 @@
-# Hackernews Feed 📙
+# Hacker News Feed 📙
 An app which shows a list of the newest hackernews posts, in a charming way. Created using VanillaJS.
 
 
@@ -53,11 +53,10 @@ https://felipebernardes.github.io/hackernews-feed
 ### Known Issues ⚠️
 - Sometimes, the newest post data isn't available in HN API right away;
 - The API only offers the 500 newest items, so the feed/scroll isn't actually infinite;
-- Pagination implementation is simplistic and has failing tests and bugs, needs to be refactored;
+- Infinite scroll is based on window scroll event, which needs to be optimized;
 
 
 ### Roadmap 💡
 - Make possible to read stories & comments in-app, withtout the need to access HN original post;
 - Add new feed tabs like 'popular', 'ask', and 'jobs';
-- Add icons for PWA;
 - Background-load posts even if the user hasn't scrolled, so older posts can be shown when offline;
