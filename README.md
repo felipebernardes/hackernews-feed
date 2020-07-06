@@ -38,16 +38,16 @@ https://felipebernardes.github.io/hackernews-feed
 
 
 ### Files Structure 📂
-|--services
-|  |----realTimeDatabase.js
-|
-|--components
-|  |----feed.js
-|  |----infiniteScroll.js
-|  |----paginator.js
-|  |----postRenderer.js
-|
-|--main.js
+|--services<br/>
+|  |----realTimeDatabase.js<br/>
+|<br/>
+|--components<br/>
+|  |----feed.js<br/>
+|  |----infiniteScroll.js<br/>
+|  |----paginator.js<br/>
+|  |----postRenderer.js<br/>
+|<br/>
+|--main.js<br/>
 
 
 ### Known Issues ⚠️
