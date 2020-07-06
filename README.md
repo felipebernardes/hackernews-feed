@@ -56,7 +56,7 @@ https://felipebernardes.github.io/hackernews-feed
 - Pagination implementation is simplistic and has failing tests and bugs, needs to be refactored;
 
 
-### Roadmap
+### Roadmap 💡
 - Make possible to read stories & comments in-app, withtout the need to access HN original post;
 - Add new feed tabs like 'popular', 'ask', and 'jobs';
 - Add icons for PWA;
